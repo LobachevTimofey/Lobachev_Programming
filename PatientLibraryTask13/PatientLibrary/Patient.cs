@@ -34,8 +34,8 @@
             else
                 serviceType = "Платное";
 
-            string arrival = Arrival.ToString("dd.MM.yyyy HH:mm");
-            string discharge = Discharge.ToString("dd.MM.yyyy HH:mm");
+            string arrival = Arrival.ToString("dd.MM.yyyy");
+            string discharge = Discharge.ToString("dd.MM.yyyy");
 
             var info = new string[3];
             info[0] = $"Имя: {Name}, Фамилия: {Surname}, Номер полиса: {PolicyNumber}";
