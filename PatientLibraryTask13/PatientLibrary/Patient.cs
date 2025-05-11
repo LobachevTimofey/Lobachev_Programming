@@ -1,6 +1,6 @@
 ﻿namespace PatientLibrary
 {
-    public class Patient
+    public class Patient : IComparable<Patient>
     {
         public string Name { get; set; }
         public string Surname { get; set; }
@@ -9,12 +9,21 @@
         public DateTime Discharge;
         public ServiceType Type;
         public int Price;
-
-        public Patient(string name, string surname, int policyNumber)
+        public Patient (string name, string surname, int policyNumber)
         {
             Name = name;
             Surname = surname;
             PolicyNumber = policyNumber;
+        }
+        public int CompareTo(Patient? other)
+        {
+            if (other is null) return 1;
+
+            int surnameComparison = Surname.CompareTo(other.Surname);
+            if (surnameComparison != 0)
+                return surnameComparison;
+
+            return Name.CompareTo(other.Name);
         }
         public void DatesCheck(DateTime arrival, DateTime discharge)
         {
@@ -43,6 +52,7 @@
             info[2] = $"Стоимость лечения: {Price} руб.";
             return info;
         }
+
         public class InpatientPatient : Patient
         {
             public string Department { get; set; }
