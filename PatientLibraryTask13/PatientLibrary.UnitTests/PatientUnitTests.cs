@@ -1,3 +1,5 @@
+using System.Reflection;
+
 namespace PatientLibrary.UnitTests
 {
     [TestFixture]
@@ -17,6 +19,24 @@ namespace PatientLibrary.UnitTests
             Assert.That(john.Price, Is.EqualTo(500));
         }
 
+        [Test]
+        public void CompareToTest()
+        {
+            var peter = new Patient("Peter", "Gabriel", 123);
+            var kate = new Patient("Kate", "Bush", 456);
+            var phil = new Patient("Phil", "Collins", 789);
+            var john = new Patient("John", "Fogerty", 145);
+            var tom = new Patient("Tom", "Fogerty", 43673);
+
+            Assert.That(phil.CompareTo(peter), Is.LessThan(0));
+            Assert.That(peter.CompareTo(kate), Is.GreaterThan(0));
+
+            Assert.That(john.CompareTo(tom), Is.LessThan(0));
+            Assert.That(tom.CompareTo(john), Is.GreaterThan(0));
+
+            Assert.That(tom.CompareTo(tom), Is.EqualTo(0));
+
+        }
 
         [Test]
         public void DatesCheck_ValidDates()
@@ -160,4 +180,47 @@ namespace PatientLibrary.UnitTests
         }
 
     }
+    [TestFixture]
+    public class DepartmentTests
+    {
+        Department department;
+        Patient[] patients;
+        [SetUp]
+        public void Setup()
+        {
+            var peter = new Patient("Peter", "Gabriel", 65000);
+            var kate = new Patient("Kate", "Bush", 70000);
+            var phil = new Patient("Phil", "Collins", 80000);
+            var john = new Patient("John", "Fogerty", 60000);
+            var tom = new Patient("Tom", "Fogerty", 60000);
+
+            patients = new Patient[] { peter, kate, phil, john, tom, peter };
+            department = new Department ("Кардиология", patients);
+        }
+        [Test]
+        public void ConstructorTest()
+        {
+            Assert.That(department.DepartmentName, Is.EqualTo("Кардиология"));
+
+            var patientList = department.ToList();
+            foreach (var patient in patients.Distinct()) 
+            {
+                Assert.That(patientList.Contains(patient), Is.True); 
+                Assert.That(patientList.Count(p => p.Equals(patient)), Is.EqualTo(1));
+            }
+        }
+        [Test]
+        public void CountTest()
+        {
+            Assert.That(department.Count, Is.EqualTo(5));
+        }
+        [Test]
+        public void IEnumerableTest()
+        {
+            var i = 0;
+            foreach (var member in department)
+                Assert.That(member, Is.SameAs(patients[i++]));
+        }
+    }
+
 }
